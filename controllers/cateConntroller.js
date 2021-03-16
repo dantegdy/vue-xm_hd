@@ -1,7 +1,6 @@
 const dbConfig = require('../util/dbconfig')
 //获取文档
 getMd = (req, res) => {
-    console.log(req.query.user_id)
     if(req.query.user_id){
         const sql = "SELECT * FROM mdbox where userid=? order by id asc ";
         let sqlArray = [req.query.user_id];

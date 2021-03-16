@@ -10,9 +10,9 @@ module.exports = {
     //     database: 'exapp',
     // },
     config: {
-        host: 'localhost',
+        host: '49.234.229.70',
         port: 3306,
-        user: 'exapp',
+        user: 'root',
         password: '123456',
         database: 'exapp',
     },
