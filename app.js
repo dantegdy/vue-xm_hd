@@ -24,27 +24,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(history({
+    htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
     rewrites: [
-        {//访问路径含dist则继续访问
-            from: /^\/dist\/.*$/,
-            to: function (context) {
-                return context.parsedUrl.pathname;
-            }
-        },
-        {//后缀为js|css 访问dist下相应文件
-            from: /^\/.*[js|css]$/,
-            to: function (context) {
-                return '/dist/' + context.parsedUrl.pathname;
-            }
-        },
-        {//访问路径不含dist则默认访问/dist/index.html
+        {
             from: /^\/.*$/,
             to: function (context) {
-                return '/dist/';
+                return "/";
             }
         },
     ]
-
 }));
 
 //设置跨域访问
