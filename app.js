@@ -17,12 +17,36 @@ var server = http.createServer(app);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use(history());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(history({
+    rewrites: [
+        {//访问路径含dist则继续访问
+            from: /^\/dist\/.*$/,
+            to: function (context) {
+                return context.parsedUrl.pathname;
+            }
+        },
+        {//后缀为js|css 访问dist下相应文件
+            from: /^\/.*[js|css]$/,
+            to: function (context) {
+                return '/dist/' + context.parsedUrl.pathname;
+            }
+        },
+        {//访问路径不含dist则默认访问/dist/index.html
+            from: /^\/.*$/,
+            to: function (context) {
+                return '/dist/';
+            }
+        },
+    ]
+
+}));
+
 //设置跨域访问
 // app.all('*', function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", "*");
@@ -34,20 +58,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 // });
 
 //设置跨域访问
-app.all("*",function(req,res,next){
-  //设置允许跨域的域名，*代表允许任意域名跨域
-  res.header("Access-Control-Allow-Origin","*");
-  //允许的header类型
-  res.header("Access-Control-Allow-Headers","content-type");
-  //跨域允许的请求方式 
-  res.header("Access-Control-Allow-Methods","DELETE,PUT,POST,GET,OPTIONS");
-  if (req.method.toLowerCase() == 'options')
-      res.send(200);  //让options尝试请求快速结束
-  else
-      next();
+app.all("*", function (req, res, next) {
+    //设置允许跨域的域名，*代表允许任意域名跨域
+    res.header("Access-Control-Allow-Origin", "*");
+    //允许的header类型
+    res.header("Access-Control-Allow-Headers", "content-type");
+    //跨域允许的请求方式 
+    res.header("Access-Control-Allow-Methods", "DELETE,PUT,POST,GET,OPTIONS");
+    if (req.method.toLowerCase() == 'options')
+        res.send(200);  //让options尝试请求快速结束
+    else
+        next();
 })
 //post请求
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/', indexRouter);
