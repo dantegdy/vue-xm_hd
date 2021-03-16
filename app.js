@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var http = require('http');
-var history = require('connect-history-api-fallback');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -22,18 +21,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(history({
-    htmlAcceptHeaders: ['text/html', 'application/xhtml+xml'],
-    rewrites: [
-        {
-            from: /^\/.*$/,
-            to: function (context) {
-                return "/";
-            }
-        },
-    ]
-}));
 
 //设置跨域访问
 // app.all('*', function(req, res, next) {
