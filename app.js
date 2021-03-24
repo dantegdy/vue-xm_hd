@@ -8,6 +8,7 @@ var http = require('http');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var weappRouter = require('./routes/weapp');
 
 var app = express();
 var server = http.createServer(app);
@@ -51,6 +52,7 @@ app.use(bodyParser.json());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/weapp', weappRouter);
 
 server.listen("8090");
 console.log("server listening http://localhost:8090");
